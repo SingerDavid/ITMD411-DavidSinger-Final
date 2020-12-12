@@ -75,17 +75,14 @@ public class Tickets extends JFrame implements ActionListener {
 
 		/* Add action listeners for each desired menu item *************/
 		mnuItemExit.addActionListener(this);
-		mnuItemUpdate.addActionListener(this);
-		mnuItemDelete.addActionListener(this);
+		
+		//only shows if user is an admin
+		if (chkIfAdmin == true) {
+			mnuItemUpdate.addActionListener(this);
+			mnuItemDelete.addActionListener(this);
+		}
 		mnuItemOpenTicket.addActionListener(this);
 		mnuItemViewTicket.addActionListener(this);
-
-		 /*
-		  * continue implementing any other desired sub menu items (like 
-		  * for update and delete sub menus for example) with similar 
-		  * syntax & logic as shown above*
-		 */
-
 
 	}
 
@@ -94,7 +91,11 @@ public class Tickets extends JFrame implements ActionListener {
 		// create JMenu bar
 		JMenuBar bar = new JMenuBar();
 		bar.add(mnuFile); // add main menu items in order, to JMenuBar
-		bar.add(mnuAdmin);
+		
+		//only show if user is an admin
+		if (chkIfAdmin == true) {
+			bar.add(mnuAdmin);
+		}
 		bar.add(mnuTickets);
 		// add menu bar components to frame
 		setJMenuBar(bar);
@@ -117,6 +118,7 @@ public class Tickets extends JFrame implements ActionListener {
 		// implement actions for sub menu items
 		if (e.getSource() == mnuItemExit) {
 			System.exit(0);
+			System.out.println("Exiting..");
 		} else if (e.getSource() == mnuItemOpenTicket) {
 
 			// get ticket information
@@ -152,6 +154,50 @@ public class Tickets extends JFrame implements ActionListener {
 				e1.printStackTrace();
 			}
 		}
+		
+		else if (e.getSource() == mnuItemUpdate) {
+			
+			//show JOption panel to get ticket information, to be updated.
+			String ticketId = JOptionPane.showInputDialog(null, "Enter ticket ID, to be updated");
+			String ticketDesc = JOptionPane.showInputDialog(null, "Ticket Description");
+			String ticketStatus = JOptionPane.showInputDialog(null, "Update status");
+			
+			if (ticketId == null) {
+				JOptionPane.showMessageDialog(null, "Ticket update failed, invalid ticket");
+				System.out.println("Ticket update failed, invalid ticket");
+			} else
+				System.out.println("Processing update..");
+			
+				//parse ticketId (string to int: before entering database)
+				int tid = Integer.parseInt(ticketId);
+				
+				//call to Doa.java to update database
+				dao.updateRecords(ticketId, ticketDesc, ticketStatus);
+				
+				//display results if successful or not to console / dialog box
+				if (tid != 0) {
+					System.out.println("Ticket ID : " + tid + " updated successfully!!!");
+					JOptionPane.showMessageDialog(null, "Ticket id: " + tid + " updated");
+				}
+				else {
+					System.out.println("Ticked update failed (2nd level failure)");
+				} //do I want brackets?? - come back after running
+				try {
+
+					// Use JTable built in functionality to build a table model and
+					// display the table model off your result set!!!
+					JTable jt = new JTable(ticketsJTable.buildTableModel(dao.readRecords()));
+					jt.setBounds(30, 40, 200, 400);
+					JScrollPane sp = new JScrollPane(jt);
+					add(sp);
+					setVisible(true); // refreshes or repaints frame on screen
+
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}			
+		}
+		
+		
 		/*
 		 * continue implementing any other desired sub menu items (like for update and
 		 * delete sub menus for example) with similar syntax & logic as shown above
