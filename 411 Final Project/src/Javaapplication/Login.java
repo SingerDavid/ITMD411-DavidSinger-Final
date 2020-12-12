@@ -34,6 +34,7 @@ public class Login extends JFrame {
 		JLabel lblStatus = new JLabel(" ", JLabel.CENTER);
 		// JLabel lblSpacer = new JLabel(" ", JLabel.CENTER);
 
+		//user name and password
 		JTextField txtUname = new JTextField(10);
 
 		JPasswordField txtPassword = new JPasswordField();
@@ -55,6 +56,7 @@ public class Login extends JFrame {
 		add(btnExit);
 		add(lblStatus);   // 4th row
 
+		//listener: button clicked
 		btn.addActionListener(new ActionListener() {
 			int count = 0; // count agent
 
@@ -64,7 +66,7 @@ public class Login extends JFrame {
 				count = count + 1;
 				// verify credentials of user (MAKE SURE TO CHANGE TO YOUR TABLE NAME BELOW)
 
-				String query = "SELECT * FROM jpapa_users WHERE uname = ? and upass = ?;";
+				String query = "SELECT * FROM Sdavid_users WHERE uname = ? and upass = ?;";
 				try (PreparedStatement stmt = conn.getConnection().prepareStatement(query)) {
 					stmt.setString(1, txtUname.getText());
 					stmt.setString(2, txtPassword.getText());

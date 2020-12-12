@@ -42,8 +42,8 @@ public class Dao {
 
 	public void createTables() {
 		// variables for SQL Query table creations
-		final String createTicketsTable = "CREATE TABLE jpapa_tickets(ticket_id INT AUTO_INCREMENT PRIMARY KEY, ticket_issuer VARCHAR(30), ticket_description VARCHAR(200))";
-		final String createUsersTable = "CREATE TABLE jpapa_users(uid INT AUTO_INCREMENT PRIMARY KEY, uname VARCHAR(30), upass VARCHAR(30), admin int)";
+		final String createTicketsTable = "CREATE TABLE Sdavid_tickets(ticket_id INT AUTO_INCREMENT PRIMARY KEY, ticket_issuer VARCHAR(30), ticket_description VARCHAR(200), ticket_status VARCHAR(100), time_stamp TIMESTAMP)";
+		final String createUsersTable = "CREATE TABLE Sdavid_users(uid INT AUTO_INCREMENT PRIMARY KEY, uname VARCHAR(30), upass VARCHAR(30), admin int)";
 
 		try {
 
@@ -98,7 +98,7 @@ public class Dao {
 			// and PASS (insert) that data into your User table
 			for (List<String> rowData : array) {
 
-				sql = "insert into jpapa_users(uname,upass,admin) " + "values('" + rowData.get(0) + "'," + " '"
+				sql = "insert into Sdavid_users(uname,upass,admin) " + "values('" + rowData.get(0) + "'," + " '"
 						+ rowData.get(1) + "','" + rowData.get(2) + "');";
 				statement.executeUpdate(sql);
 			}
@@ -120,7 +120,7 @@ public class Dao {
 			//extra-credit. Add a time stamp to tickets
 			//Opening a ticket adds a status of "open"
 			String timeStamp = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
-			statement.executeUpdate("Insert into jpapa_tickets" + "(ticket_issuer, ticket_description, status, time) values(" + " '"
+			statement.executeUpdate("Insert into Sdavid_tickets" + "(ticket_issuer, ticket_description, status, time) values(" + " '"
 					+ ticketName + "','" + ticketDesc + "','" + "OPEN" + "','" + timeStamp + "')", Statement.RETURN_GENERATED_KEYS);
 
 			// retrieve ticket id number newly auto generated upon record insertion
@@ -144,8 +144,7 @@ public class Dao {
 		ResultSet results = null;
 		try {
 			statement = connect.createStatement();
-			results = statement.executeQuery("SELECT * FROM jpapa_tickets");
-			connect.close();
+			results = statement.executeQuery("SELECT * FROM Sdavid_tickets");
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
@@ -158,9 +157,8 @@ public class Dao {
 			//open create statement
 			//select the ticket based on the entered tid in GUI
 			statement = connect.createStatement();
-			ResultSet rsUpdate = statement.executeQuery("SELECT ticket_description FROM jpapa_tickets WHERE"
+			ResultSet rsUpdate = statement.executeQuery("SELECT ticket_description FROM Sdavid_tickets WHERE"
 					+ "id = " + tid);
-			connect.close();
 			
 			//declare String for loop
 			String results = null;
@@ -170,15 +168,16 @@ public class Dao {
 			
 			//extra-credit: using prepared statements to update query
 			//requires import of PreparedStatements.java
-			PreparedStatement ps = connect.prepareStatement("UPDATE jpapa_tickets SET ticket_description = ?, status = ?, WHERE id = ?");
+			PreparedStatement ps = connect.prepareStatement("UPDATE Sdavid_tickets SET ticket_description = ?, status = ?, WHERE id = ?");
 			
 			//https://www.javatpoint.com/PreparedStatement-interface
 			//setting parameters
 			String DescUpdate = results + "\nUpdate:" + desc;
 			//java said the parameters should swap..so I did, but I thought it was (DescUpgrade, 1)
-			ps.setString(1, tid);
-			ps.setString(2, DescUpdate);
-			ps.setString(3, status);
+			//error: these have to match with ps ^
+			ps.setString(1, DescUpdate);
+			ps.setString(2, status);
+			ps.setString(3, tid);
 			ps.executeUpdate();
 			ps.close();
 			
@@ -193,7 +192,7 @@ public class Dao {
 		System.out.println();
 		try {
 			statement = connect.createStatement();
-			String delete = "DELETE FROM jpapa_tickets WHERE id = " + tid;
+			String delete = "DELETE FROM Sdavid_tickets WHERE id = " + tid;
 			statement.executeUpdate(delete);
 		} catch (SQLException e1) {
 			e1.printStackTrace();

@@ -134,7 +134,7 @@ public class Tickets extends JFrame implements ActionListener {
 				System.out.println("Ticket ID : " + id + " created successfully!!!");
 				JOptionPane.showMessageDialog(null, "Ticket id: " + id + " created");
 			} else
-				System.out.println("Ticket cannot be created!!!");
+				System.out.println("Ticket cannot be created!!! - line 137");
 		}
 
 		else if (e.getSource() == mnuItemViewTicket) {
@@ -164,7 +164,7 @@ public class Tickets extends JFrame implements ActionListener {
 			
 			if (ticketId == null) {
 				JOptionPane.showMessageDialog(null, "Ticket update failed, invalid ticket");
-				System.out.println("Ticket update failed, invalid ticket");
+				System.out.println("Ticket update failed, invalid ticket - line 167");
 			} else
 				System.out.println("Processing update..");
 			
@@ -176,11 +176,11 @@ public class Tickets extends JFrame implements ActionListener {
 				
 				//display results if successful or not to console / dialog box
 				if (tid != 0) {
-					System.out.println("Ticket ID : " + tid + " updated successfully!!!");
+					System.out.println("Ticket ID :" + tid + " updated successfully!!! - line 179");
 					JOptionPane.showMessageDialog(null, "Ticket id: " + tid + " updated");
 				}
 				else {
-					System.out.println("Ticked update failed (2nd level failure)");
+					System.out.println("Ticked update failed (2nd level failure) - line 183");
 				} //do I want brackets?? - come back after running
 				try {
 
@@ -202,7 +202,7 @@ public class Tickets extends JFrame implements ActionListener {
 			
 			if (ticketId == null) {
 				JOptionPane.showMessageDialog(null, "Ticket delete failed, invalid ticket");
-				System.out.println("Ticket delete failed, invalid ticket");
+				System.out.println("Ticket delete failed, invalid ticket - line 205");
 			} else
 				System.out.println("Deleting ticket..");
 			
