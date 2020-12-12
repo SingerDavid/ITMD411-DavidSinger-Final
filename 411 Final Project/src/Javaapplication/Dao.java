@@ -112,16 +112,15 @@ public class Dao {
 		}
 	}
 
-	public int insertRecords(String ticketName, String ticketDesc) {
+	public int insertRecords(String ticketName, String ticketDesc, String status, String  timeStamp) {
 		int id = 0;
 		try {
 			statement = getConnection().createStatement();
 			
 			//extra-credit. Add a time stamp to tickets
 			//Opening a ticket adds a status of "open"
-			String timeStamp = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
-			statement.executeUpdate("Insert into Sdavid_tickets" + "(ticket_issuer, ticket_description, status, time) values(" + " '"
-					+ ticketName + "','" + ticketDesc + "','" + "OPEN" + "','" + timeStamp + "')", Statement.RETURN_GENERATED_KEYS);
+			statement.executeUpdate("Insert into Sdavid_tickets" + "(ticket_issuer, ticket_description, ticket_status, time_stamp) values(" + " '"
+					+ ticketName + "','" + ticketDesc + "','" + status + "','" + timeStamp + "')", Statement.RETURN_GENERATED_KEYS);
 
 			// retrieve ticket id number newly auto generated upon record insertion
 			ResultSet resultSet = null;
