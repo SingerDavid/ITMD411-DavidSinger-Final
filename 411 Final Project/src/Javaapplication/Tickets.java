@@ -196,13 +196,36 @@ public class Tickets extends JFrame implements ActionListener {
 					e1.printStackTrace();
 				}			
 		}
+		else if (e.getSource() == mnuItemDelete) {
+			//get ticket id to delete
+			String ticketId = JOptionPane.showInputDialog(null, "Enter a ticket number to delete");
+			
+			if (ticketId == null) {
+				JOptionPane.showMessageDialog(null, "Ticket delete failed, invalid ticket");
+				System.out.println("Ticket delete failed, invalid ticket");
+			} else
+				System.out.println("Deleting ticket..");
+			
+				int tid = Integer.parseInt(ticketId);
+			
+				//configure built in JOption confirm (YES/NO)
+				//component, string, int, JOption display message
+				int confirm = JOptionPane.showConfirmDialog(null, "Confirm, do you wish to delete ticket ID: " + tid + "?", "Warning!", JOptionPane.YES_NO_OPTION);
+			
+				if (confirm == JOptionPane.YES_OPTION) {
+					int delid = dao.deleteRecords(tid);
+				
+					if (delid !=0) {
+						JOptionPane.showMessageDialog(null, "Ticket ID: " + delid + " successfully deleted");
+						System.out.println("Ticket ID: " + delid + " successfully deleted");
+					} else {
+						System.out.println("Ticket was not deleted!");
+					}
+				} else {
+					JOptionPane.showMessageDialog(null, "Ticket ID" + tid + " was not deleted!");
+				}			
+		}
 		
-		
-		/*
-		 * continue implementing any other desired sub menu items (like for update and
-		 * delete sub menus for example) with similar syntax & logic as shown above
-		 */
-
 	}
 
 }

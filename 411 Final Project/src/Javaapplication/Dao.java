@@ -189,5 +189,16 @@ public class Dao {
 	}
 
 	// continue coding for deleteRecords implementation
-
+	public int deleteRecords(int tid) {
+		System.out.println();
+		try {
+			statement = connect.createStatement();
+			String delete = "DELETE FROM jpapa_tickets WHERE id = " + tid;
+			statement.executeUpdate(delete);
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return tid;
+	}
+	
 }//end of class
