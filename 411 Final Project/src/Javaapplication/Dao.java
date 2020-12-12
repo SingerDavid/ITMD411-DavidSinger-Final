@@ -5,12 +5,15 @@ import java.io.File;
 import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class Dao {
 	// instance fields
@@ -65,7 +68,7 @@ public class Dao {
 
 	public void addUsers() {
 		// add list of users from userlist.csv file to users table
-
+		
 		// variables for SQL Query inserts
 		String sql;
 
@@ -113,8 +116,12 @@ public class Dao {
 		int id = 0;
 		try {
 			statement = getConnection().createStatement();
-			statement.executeUpdate("Insert into jpapa_tickets" + "(ticket_issuer, ticket_description) values(" + " '"
-					+ ticketName + "','" + ticketDesc + "')", Statement.RETURN_GENERATED_KEYS);
+			
+			//extra-credit. Add a time stamp to tickets
+			//Opening a ticket adds a status of "open"
+			String timeStamp = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
+			statement.executeUpdate("Insert into jpapa_tickets" + "(ticket_issuer, ticket_description, status, time) values(" + " '"
+					+ ticketName + "','" + ticketDesc + "','" + "OPEN" + "','" + timeStamp + "')", Statement.RETURN_GENERATED_KEYS);
 
 			// retrieve ticket id number newly auto generated upon record insertion
 			ResultSet resultSet = null;
@@ -138,13 +145,49 @@ public class Dao {
 		try {
 			statement = connect.createStatement();
 			results = statement.executeQuery("SELECT * FROM jpapa_tickets");
-			//connect.close();
+			connect.close();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
 		return results;
 	}
+	
 	// continue coding for updateRecords implementation
+	public void updateRecords(String tid, String desc, String status) {
+		try {
+			//open create statement
+			//select the ticket based on the entered tid in GUI
+			statement = connect.createStatement();
+			ResultSet rsUpdate = statement.executeQuery("SELECT ticket_description FROM jpapa_tickets WHERE"
+					+ "id = " + tid);
+			connect.close();
+			
+			//declare String for loop
+			String results = null;
+			while (rsUpdate.next()) {
+				results = rsUpdate.getString("ticket_description");
+			}
+			
+			//extra-credit: using prepared statements to update query
+			//requires import of PreparedStatements.java
+			PreparedStatement ps = connect.prepareStatement("UPDATE jpapa_tickets SET ticket_description = ?, status = ?, WHERE id = ?");
+			
+			//https://www.javatpoint.com/PreparedStatement-interface
+			//setting parameters
+			String DescUpdate = results + "\nUpdate:" + desc;
+			//java said the parameters should swap..so I did, but I thought it was (DescUpgrade, 1)
+			ps.setString(1, tid);
+			ps.setString(2, DescUpdate);
+			ps.setString(3, status);
+			ps.executeUpdate();
+			ps.close();
+			
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		
+	}
 
 	// continue coding for deleteRecords implementation
-}
+
+}//end of class
