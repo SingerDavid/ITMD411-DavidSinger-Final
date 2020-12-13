@@ -155,7 +155,7 @@ public class Dao {
 		ResultSet results = null;
 		try {
 			statement = connect.createStatement();
-			results = statement.executeQuery("SELECT * FROM Sdavid_tickets WHERE id = " + tid);
+			results = statement.executeQuery("SELECT * FROM Sdavid_tickets WHERE ticket_id = " + tid);
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
@@ -169,7 +169,7 @@ public class Dao {
 			//select the ticket based on the entered tid in GUI
 			statement = connect.createStatement();
 			ResultSet rsUpdate = statement.executeQuery("SELECT ticket_description FROM Sdavid_tickets WHERE"
-					+ "id = " + tid);
+					+ "ticket_id = " + tid);
 			
 			//declare String for loop
 			String results = null;
@@ -179,7 +179,7 @@ public class Dao {
 			
 			//extra-credit: using prepared statements to update query
 			//requires import of PreparedStatements.java
-			PreparedStatement ps = connect.prepareStatement("UPDATE Sdavid_tickets SET ticket_description = ?, status = ?, WHERE id = ?");
+			PreparedStatement ps = connect.prepareStatement("UPDATE Sdavid_tickets SET ticket_description = ?, status = ?, WHERE ticket_id = ?");
 			
 			//https://www.javatpoint.com/PreparedStatement-interface
 			//setting parameters
@@ -203,7 +203,7 @@ public class Dao {
 		System.out.println();
 		try {
 			statement = connect.createStatement();
-			String delete = "DELETE FROM Sdavid_tickets WHERE id = " + tid;
+			String delete = "DELETE FROM Sdavid_tickets WHERE ticket_id = " + tid;
 			statement.executeUpdate(delete);
 		} catch (SQLException e1) {
 			e1.printStackTrace();
