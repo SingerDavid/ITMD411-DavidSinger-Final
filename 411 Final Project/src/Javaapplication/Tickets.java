@@ -35,6 +35,7 @@ public class Tickets extends JFrame implements ActionListener {
 	JMenuItem mnuItemDelete;
 	JMenuItem mnuItemOpenTicket;
 	JMenuItem mnuItemViewTicket;
+	JMenuItem mnuItemFindTicket;
 
 	public Tickets(Boolean isAdmin) {
 
@@ -62,6 +63,11 @@ public class Tickets extends JFrame implements ActionListener {
 		mnuItemDelete = new JMenuItem("Delete Ticket");
 		// add to Admin main menu item
 		mnuAdmin.add(mnuItemDelete);
+		
+		// initialize third sub menu items for Admin main menu
+		mnuItemDelete = new JMenuItem("Find Ticket");
+		// add to Admin main menu item
+		mnuAdmin.add(mnuItemFindTicket);
 
 		// initialize first sub menu item for Tickets main menu
 		mnuItemOpenTicket = new JMenuItem("Open Ticket");
@@ -72,7 +78,7 @@ public class Tickets extends JFrame implements ActionListener {
 		mnuItemViewTicket = new JMenuItem("View Ticket");
 		// add to Ticket Main menu item
 		mnuTickets.add(mnuItemViewTicket);
-
+		
 		// initialize any more desired sub menu items below
 
 		/* Add action listeners for each desired menu item *************/
@@ -82,6 +88,7 @@ public class Tickets extends JFrame implements ActionListener {
 		if (chkIfAdmin == true) {
 			mnuItemUpdate.addActionListener(this);
 			mnuItemDelete.addActionListener(this);
+			mnuItemFindTicket.addActionListener(this);
 		}
 		mnuItemOpenTicket.addActionListener(this);
 		mnuItemViewTicket.addActionListener(this);
@@ -227,9 +234,35 @@ public class Tickets extends JFrame implements ActionListener {
 					}
 				} else {
 					JOptionPane.showMessageDialog(null, "Ticket ID" + tid + " was not deleted!");
-				}			
+				}		
 		}
-		
+		else if (e.getSource() == mnuItemFindTicket) {
+			String ticketId = JOptionPane.showInputDialog(null, "Locate a ticket: Enter a ticket ID");
+			
+			if (ticketId == null) {
+				JOptionPane.showMessageDialog(null, "Ticket search failed, invalid ticket");
+				System.out.println("Ticket search failed, invalid ticket - line 244");
+			} else
+				System.out.println("Searching tickets..");
+				
+				int tid = Integer.parseInt(ticketId);
+				
+				try {
+					//Use JTable built in functionality to build a table model and
+					//display the table model off your result set!!!
+					JTable jt = new JTable(ticketsJTable.buildTableModel(dao.findRecords(tid)));
+					jt.setBounds(30, 40, 200, 400);
+				    JScrollPane sp = new JScrollPane(jt);
+					add(sp);
+					setVisible(true); // refreshes or repaints frame on screen
+					System.out.println("Finding ticket..");
+
+				} catch (SQLException e1) {
+					System.out.println("Couldn't find ticket, invalid ticket");
+					e1.printStackTrace();
+				}		
+			
+		}
 	}
 
 }

@@ -150,6 +150,18 @@ public class Dao {
 		return results;
 	}
 	
+	public ResultSet findRecords(int tid) {
+		
+		ResultSet results = null;
+		try {
+			statement = connect.createStatement();
+			results = statement.executeQuery("SELECT * FROM Sdavid_tickets WHERE id = " + tid);
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return results;
+	}
+	
 	// continue coding for updateRecords implementation
 	public void updateRecords(String tid, String desc, String status) {
 		try {
@@ -173,7 +185,7 @@ public class Dao {
 			//setting parameters
 			String DescUpdate = results + "\nUpdate:" + desc;
 			//java said the parameters should swap..so I did, but I thought it was (DescUpgrade, 1)
-			//error: these have to match with ps ^
+			//error: these have to match with ps order^
 			ps.setString(1, DescUpdate);
 			ps.setString(2, status);
 			ps.setString(3, tid);
