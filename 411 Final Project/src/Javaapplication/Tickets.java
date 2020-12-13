@@ -1,3 +1,7 @@
+//Programmer: David Singer
+//ITMD411 Final Project
+//Set up a GUI interface to operate Dao.java file
+
 package Javaapplication;
 
 import java.awt.Color;

@@ -1,3 +1,7 @@
+//Programmer: David Singer
+//ITMD411 Final Project
+//Everything works automatically pulling your metadata and placing that 
+//into the JTable to set up a column structure and the grabbing of row data is accomplished automatically 
 package Javaapplication;
 
 import java.sql.ResultSet;

@@ -1,3 +1,6 @@
+//Programmer: David Singer
+//ITMD411 Final Project
+//Dao.java will perform CRUD work and connection to the database. 
 package Javaapplication;
 
 import java.io.BufferedReader;
@@ -163,7 +166,7 @@ public class Dao {
 	}
 	
 	// continue coding for updateRecords implementation
-	public void updateRecords(String tid, String desc, String status) {
+	public void updateRecords(String desc, String status, String tid) {
 		try {
 			//open create statement
 			//select the ticket based on the entered tid in GUI
@@ -171,23 +174,32 @@ public class Dao {
 			ResultSet rsUpdate = statement.executeQuery("SELECT ticket_description FROM Sdavid_tickets WHERE"
 					+ "ticket_id = " + tid);
 			
+			ResultSet rsClose = statement.executeQuery("SELECT ticket_status FROM Sdavid_tickets WHERE"
+					+ "ticket_id = " + tid);
+			
 			//declare String for loop
 			String results = null;
+			String OpenClose = null;
 			while (rsUpdate.next()) {
 				results = rsUpdate.getString("ticket_description");
+				
+				while (rsClose.next()) {
+					OpenClose = rsClose.getString("ticket_status");
+				}
 			}
 			
 			//extra-credit: using prepared statements to update query
 			//requires import of PreparedStatements.java
-			PreparedStatement ps = connect.prepareStatement("UPDATE Sdavid_tickets SET ticket_description = ?, status = ?, WHERE ticket_id = ?");
+			PreparedStatement ps = connect.prepareStatement("UPDATE Sdavid_tickets SET ticket_description = ?, ticket_status = ?, WHERE ticket_id = ?");
 			
 			//https://www.javatpoint.com/PreparedStatement-interface
 			//setting parameters
-			String DescUpdate = results + "\nUpdate:" + desc;
+			String DescUpdate = desc;
+			String StatusUpdate = status; 
 			//java said the parameters should swap..so I did, but I thought it was (DescUpgrade, 1)
 			//error: these have to match with ps order^
 			ps.setString(1, DescUpdate);
-			ps.setString(2, status);
+			ps.setString(2, StatusUpdate);
 			ps.setString(3, tid);
 			ps.executeUpdate();
 			ps.close();

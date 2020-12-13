@@ -1,3 +1,7 @@
+//Programmer: David Singer
+//ITMD411 Final Project
+//This file authenticates users both admin and regular - see userlist.csv
+
 package Javaapplication;
 
 import java.awt.GridLayout; //useful for layouts
